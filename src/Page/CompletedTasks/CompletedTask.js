@@ -86,7 +86,6 @@ const CompletedTask = () => {
                             {important ?
                                 <div>
                                     <button className='primary_btn bg-red' style={{ backgroundColor: "black", color: 'white' }}>Remove</button>
-
                                 </div>
                                 : <div>
                                     <button className='primary_btn ml-2' onClick={handleClick}>Important</button>
