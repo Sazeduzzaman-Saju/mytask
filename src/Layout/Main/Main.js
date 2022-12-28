@@ -15,16 +15,16 @@ const Main = () => {
         setTimeout(() => {
             setLoading(false)
 
-        }, 2000)
+        }, 1000)
     }, [])
     return (
         <div>
             {
                 loading ?
-                    <div className='container'>
-                        <div className='jus'>
-                            <div className='justify-center flex h-full align-middle' style={{ height: '100vh' }}>
-                                <PuffLoader color={'#4568dc'} loading={loading} size={150} />
+                    <div className='mx-w-full-xl mx-auto'>
+                        <div class="grid grid-cols-1 place-items-center">
+                            <div class="mx-auto max-w-3xl pt-20 pb-32 sm:pt-48 sm:pb-40">
+                                <PuffLoader color={'#000'} loading={loading} size={150} />
                             </div>
                         </div>
                     </div>
@@ -32,7 +32,8 @@ const Main = () => {
                     <>
                         <Header></Header>
                         <Outlet />
-                        <Footer></Footer></>
+                        <Footer></Footer>
+                    </>
             }
         </div>
     );
