@@ -4,9 +4,11 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link, NavLink } from 'react-router-dom'
 
 const navigation = [
+    { name: 'Home', href: '/' },
     { name: 'Add Task', href: '/add-task' },
     { name: 'My Task', href: '/my-task' },
-    { name: 'Completed Task', href: '/completed-task' },
+    { name: 'Completed', href: '/completed-task' },
+    { name: 'Important', href: '/important-task' },
     { name: 'All Task', href: '/all-task' },
 ]
 
@@ -20,7 +22,7 @@ const Header = () => {
             <Disclosure as="nav" className="bg-white drop-shadow-md">
                 {({ open }) => (
                     <>
-                        <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+                        <div className="mx-auto  px-2 sm:px-6 lg:px-8">
                             <div className="relative flex h-16 items-center justify-between">
                                 <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                                     {/* Mobile menu button*/}

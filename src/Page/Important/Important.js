@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import BreadCrumb from '../../comps/BreadCrumb/BreadCrumb';
 import useWebTItle from '../../hooks/useWebTItle';
 
-const CompletedTask = () => {
+const Important = () => {
     const [important, setImportant] = useState(false)
-    useWebTItle('My Completed Task');
+    useWebTItle('Important Task');
     const handleClick = () => {
         setImportant(true);
     }
@@ -14,8 +14,8 @@ const CompletedTask = () => {
             id: '1',
             name1: 'home',
             link1: '/',
-            name2: 'Completed Task',
-            link2: '/completed-task',
+            name2: 'Important Task',
+            link2: '/important-task',
         },
     ]
 
@@ -30,18 +30,18 @@ const CompletedTask = () => {
                     </div>
                 </div>
             </div>
-            <div className='text-start p-5'>
-                <h1 className='text-3xl text-black font-bold uppercase'>[ All Completed Task ]</h1>
+            <div className='text-center p-5'>
+                <h1 className='text-3xl text-black font-bold uppercase'>[ All Important Task ]</h1>
             </div>
-            <div className="max-w-md py-4 px-8 bg-white shadow-lg rounded-lg my-20">
-                <div className="flex justify-center md:justify-end -mt-16">
-                    <img className="w-20 h-20 object-cover rounded-full border-2  drop-shadow-lg" src="https://images.unsplash.com/photo-1499714608240-22fc6ad53fb2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80" alt='' />
+            <div class="max-w-md py-4 px-8 bg-white shadow-lg rounded-lg my-20">
+                <div class="flex justify-center md:justify-end -mt-16">
+                    <img class="w-20 h-20 object-cover rounded-full border-2 border-indigo-500" src="https://images.unsplash.com/photo-1499714608240-22fc6ad53fb2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80" alt='' />
                 </div>
                 <div>
-                    <h2 className="text-gray-800 text-3xl font-semibold">Design Tools</h2>
-                    <p className="mt-2 text-gray-600">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae dolores deserunt ea doloremque natus error, rerum quas odio quaerat nam ex commodi hic, suscipit in a veritatis pariatur minus consequuntur!</p>
+                    <h2 class="text-gray-800 text-3xl font-semibold">Design Tools</h2>
+                    <p class="mt-2 text-gray-600">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae dolores deserunt ea doloremque natus error, rerum quas odio quaerat nam ex commodi hic, suscipit in a veritatis pariatur minus consequuntur!</p>
                 </div>
-                <div className="flex justify-center mt-4">
+                <div class="flex justify-center mt-4">
 
                     {important ?
                         <div>
@@ -51,6 +51,7 @@ const CompletedTask = () => {
                         : <div>
                             <button className='primary_btn ml-2' onClick={handleClick}>Important</button>
                             <button className='primary_btn ml-2' >Remove</button>
+                            <button className='primary_btn ml-2' >Replace</button>
                         </div>
                     }
                 </div>
@@ -59,4 +60,4 @@ const CompletedTask = () => {
     );
 };
 
-export default CompletedTask;
+export default Important;
