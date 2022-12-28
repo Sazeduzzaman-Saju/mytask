@@ -6,6 +6,8 @@ import Home from "../Page/Home/Home";
 import MyTask from "../Page/My Task/MyTask";
 import ErrorPage from "../Page/ErrorPage/ErrorPage";
 import AllTask from "../Page/All Task/AllTask";
+import Login from "../Page/Login/Login";
+import SignUp from "../Page/Register/SignUp";
 
 const router = createBrowserRouter([
     {
@@ -15,9 +17,11 @@ const router = createBrowserRouter([
         children: [
             { path: '/', element: <Home></Home> },
             { path: '/add-task', element: <AddTask></AddTask> },
-            { path: '/add-task', element: <MyTask></MyTask> },
-            { path: '/add-task', element: <CompletedTask></CompletedTask> },
-            { path: '/add-task', element: <AllTask></AllTask> },
+            { path: '/my-task', element: <MyTask></MyTask> },
+            { path: '/completed-task', element: <CompletedTask></CompletedTask> },
+            { path: '/all-task', element: <AllTask></AllTask> },
+            { path: '/login', element: <Login></Login> },
+            { path: '/register', element: <SignUp></SignUp> },
 
         ]
     },

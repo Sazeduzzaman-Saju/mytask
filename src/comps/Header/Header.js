@@ -1,12 +1,13 @@
 import { Fragment } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
+import { Disclosure, Menu } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Link, NavLink } from 'react-router-dom'
 
 const navigation = [
-    { name: 'Add Task', href: '#' },
-    { name: 'My Task', href: '#' },
-    { name: 'Completed Task', href: '#' },
-    { name: 'All Task', href: '#' },
+    { name: 'Add Task', href: '/add-task' },
+    { name: 'My Task', href: '/my-task' },
+    { name: 'Completed Task', href: '/completed-task' },
+    { name: 'All Task', href: '/all-task' },
 ]
 
 function classNames(...classes) {
@@ -63,17 +64,17 @@ const Header = () => {
                                     <div className="hidden sm:ml-6 sm:block  justify-center align-middle">
                                         <div className="flex justify-center align-middle space-x-4">
                                             {navigation.map((item) => (
-                                                <a
+                                                <NavLink
                                                     key={item.name}
-                                                    href={item.href}
+                                                    to={item.href}
                                                     className={classNames(
-                                                        item.current ? 'bg-gray-900 text-white' : 'text-black hover:bg-gray-700 hover:text-white',
+                                                        item.current ? 'bg-gray-900 text-white' : 'text-black hover:bg-gray-700 hover:text-white navbtn',
                                                         'px-3 py-2 rounded-md text-sm font-medium flex justify-center align-middle'
                                                     )}
                                                     aria-current={item.current ? 'page' : undefined}
                                                 >
                                                     {item.name}
-                                                </a>
+                                                </NavLink>
                                             ))}
                                         </div>
                                     </div>
@@ -82,58 +83,17 @@ const Header = () => {
 
                                     {/* Profile dropdown */}
                                     <Menu as="div" className="relative ml-3">
-                                        <div>
-                                            <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                                                <span className="sr-only">Open user menu</span>
-                                                <img
-                                                    className="h-8 w-8 rounded-full"
-                                                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                    alt=""
-                                                />
-                                            </Menu.Button>
+
+                                        <div className='flex'>
+                                            <Link to='/login'>
+                                                <button className='mr-3 primary_btn text-black'>Login</button>
+                                            </Link>
+                                            <Link to='/register'>
+                                                <button className='mr-3 primary_btn text-black' >Register</button>
+                                            </Link>
+
                                         </div>
-                                        <Transition
-                                            as={Fragment}
-                                            enter="transition ease-out duration-100"
-                                            enterFrom="transform opacity-0 scale-95"
-                                            enterTo="transform opacity-100 scale-100"
-                                            leave="transition ease-in duration-75"
-                                            leaveFrom="transform opacity-100 scale-100"
-                                            leaveTo="transform opacity-0 scale-95"
-                                        >
-                                            <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                                <Menu.Item>
-                                                    {({ active }) => (
-                                                        <a
-                                                            href="/#"
-                                                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                                                        >
-                                                            Your Profile
-                                                        </a>
-                                                    )}
-                                                </Menu.Item>
-                                                <Menu.Item>
-                                                    {({ active }) => (
-                                                        <a
-                                                            href="/#"
-                                                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                                                        >
-                                                            Settings
-                                                        </a>
-                                                    )}
-                                                </Menu.Item>
-                                                <Menu.Item>
-                                                    {({ active }) => (
-                                                        <a
-                                                            href="/#"
-                                                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                                                        >
-                                                            Sign out
-                                                        </a>
-                                                    )}
-                                                </Menu.Item>
-                                            </Menu.Items>
-                                        </Transition>
+
                                     </Menu>
                                 </div>
                             </div>
