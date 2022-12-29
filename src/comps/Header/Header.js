@@ -1,7 +1,9 @@
-import { Fragment } from 'react'
+import { Fragment, useContext } from 'react'
 import { Disclosure, Menu } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link, NavLink } from 'react-router-dom'
+import { AuthContext } from '../../context/AuthProvider'
+import { FaUser } from 'react-icons/fa';
 
 const navigation = [
     { name: 'Home', href: '/' },
@@ -17,6 +19,12 @@ function classNames(...classes) {
 }
 
 const Header = () => {
+    const { user, singOut } = useContext(AuthContext);
+    const handleSingOut = () => {
+        singOut()
+            .then(result => { })
+            .catch(error => console.log(error))
+    }
     return (
         <div>
             <Disclosure as="nav" className="bg-white drop-shadow-md">
@@ -86,13 +94,32 @@ const Header = () => {
                                     {/* Profile dropdown */}
                                     <Menu as="div" className="relative ml-3">
 
+
                                         <div className='flex'>
-                                            <Link to='/login'>
-                                                <button className='mr-3 primary_btn text-black'>Login</button>
-                                            </Link>
-                                            <Link to='/register'>
-                                                <button className='mr-3 primary_btn text-black' >Register</button>
-                                            </Link>
+                                            {user?.photoURL ?
+                                                <>
+                                                    <Link to='/login'>
+                                                        <button onClick={handleSingOut} className='mr-3 primary_btn text-black'>SignOut</button>
+                                                    </Link>
+                                                    <img
+                                                        src={user?.photoURL}
+                                                        class="rounded-full w-10"
+                                                        alt="Avatar"
+                                                    />
+                                                </>
+                                                :
+                                                <>
+                                                    <div className='flex'>
+                                                        <Link to='/login'>
+                                                            <button className='mr-3 primary_btn text-black'>Login</button>
+                                                        </Link>
+                                                        <Link to='/register'>
+                                                            <button className='mr-3 primary_btn text-black' >Register</button>
+                                                        </Link>
+                                                        <FaUser></FaUser>
+                                                    </div>
+                                                </>}
+
 
                                         </div>
 
