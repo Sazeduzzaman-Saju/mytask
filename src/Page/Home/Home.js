@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { PuffLoader } from 'react-spinners';
 import useWebTItle from '../../hooks/useWebTItle';
+import Feature from './Feature';
 import HomeBanner from './HomeBanner';
 import Steps from './Steps';
+import Why from './Why';
 
 const Home = () => {
     useWebTItle('Home');
@@ -26,9 +28,11 @@ const Home = () => {
                     </div>
                 </div>
                 :
-                <section className='mx-w-full-xl mb-5'>
+                <section className='mx-w-full-xl mb-5 dark:bg-slate-900 dark:text-white'>
                     <div>
                         <HomeBanner></HomeBanner>
+                        <Feature></Feature>
+                        <Why></Why>
                         <Steps></Steps>
                     </div>
                 </section>}

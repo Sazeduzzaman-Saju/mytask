@@ -9,6 +9,7 @@ import AllTask from "../Page/All Task/AllTask";
 import Login from "../Page/Login/Login";
 import SignUp from "../Page/Register/SignUp";
 import Important from "../Page/Important/Important";
+import PrivateRoutes from "./PrivateRoutes/PrivateRoutes";
 
 const router = createBrowserRouter([
     {
@@ -17,7 +18,7 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage></ErrorPage>,
         children: [
             { path: '/', element: <Home></Home> },
-            { path: '/add-task', element: <AddTask></AddTask> },
+            { path: '/add-task', element: <PrivateRoutes><AddTask></AddTask> </PrivateRoutes> },
             { path: '/my-task', element: <MyTask></MyTask> },
             { path: '/completed-task', element: <CompletedTask></CompletedTask> },
             { path: '/all-task', element: <AllTask></AllTask> },

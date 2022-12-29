@@ -5,12 +5,12 @@ const HomeBanner = () => {
     return (
         <div>
             <main>
-                <div class="relative px-6 lg:px-8">
+                <div class="relative px-6 lg:px-8 dark:bg-slate-900">
                     <div class="mx-auto max-w-3xl pt-20 pb-32 sm:pt-48 sm:pb-40">
                         <div>
                             <div>
-                                <h1 class="text-4xl font-bold tracking-tight sm:text-center sm:text-6xl">Write Your Daily <br />Important Task Here</h1>
-                                <p class="mt-6 text-lg leading-8 text-gray-600 sm:text-center">Easily
+                                <h1 class="text-4xl font-bold tracking-tight sm:text-center sm:text-6xl">Write Your <span className='text-blue-600 dark:text-white'>Daily </span> <br /> <span className='text-blue-600 dark:text-white'>Important</span>  Task Here</h1>
+                                <p class="mt-6 text-lg leading-8 text-gray-600 dark:text-white sm:text-center">Easily
                                     your can manage your daily schedule or important<br /> task with the help of <strong>My Task </strong> Web Application.
                                 </p>
                                 <div class="mt-8 flex gap-x-4 sm:justify-center">

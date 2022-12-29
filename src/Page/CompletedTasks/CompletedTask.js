@@ -1,12 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { PuffLoader } from 'react-spinners';
 import BreadCrumb from '../../comps/BreadCrumb/BreadCrumb';
 import useWebTItle from '../../hooks/useWebTItle';
 import { FcCalendar, FcAlarmClock, FcEmptyTrash, FcApproval } from "react-icons/fc";
+import { AuthContext } from '../../context/AuthProvider';
+import { toast } from 'react-hot-toast';
 
 const CompletedTask = () => {
     useWebTItle('My Completed Task');
+    const { user } = useContext(AuthContext)
 
     const breadCrumb = [
         {
@@ -17,7 +20,7 @@ const CompletedTask = () => {
             link2: '/completed-task',
         },
     ]
-    const url = `http://localhost:5000/complete`;
+    const url = `https://mytask-server.vercel.app/mycomplete?email=${user?.email}`;
     const { data: tasks = [], refetch, } = useQuery({
         queryKey: ['alltask'],
         queryFn: async () => {
@@ -42,7 +45,7 @@ const CompletedTask = () => {
         console.log(id)
         const proceed = window.confirm('Confirm Delete This Order')
         if (proceed) {
-            fetch(`http://localhost:5000/complete/${id}`, {
+            fetch(`https://mytask-server.vercel.app/complete/${id}`, {
                 method: 'DELETE'
             })
                 .then(res => res.json())
@@ -50,7 +53,7 @@ const CompletedTask = () => {
                     console.log(data)
                     if (data.deletedCount > 0) {
                         refetch('');
-                        alert('Delete Successfully')
+                        toast.success('Delete Successfully')
                     }
                 })
                 .catch(error => console.error(error))
@@ -69,7 +72,7 @@ const CompletedTask = () => {
                 </div>
                 :
                 <section className='mx-w-full-xl'>
-                    <div className="py-6 dark:bg-black dark:text-black">
+                    <div className="py-6 dark:bg-gray-900 dark:text-black">
                         <div className=" container mx-auto flex flex-col items-center justify-center p-4 space-y-8 md:p-10 lg:space-y-0 lg:flex-row lg:justify-between">
                             <div className=''>
                                 {breadCrumb.map((item) => (
@@ -78,16 +81,16 @@ const CompletedTask = () => {
                             </div>
                         </div>
                     </div>
-                    <div className='text-start p-5'>
-                        <h1 className='text-3xl text-black font-bold uppercase'>[ All Completed Task ]</h1>
+                    <div className='text-start p-5 dark:bg-gray-900 '>
+                        <h1 className='text-3xl text-center text-black font-bold uppercase'>{tasks.length === 0 ? '[ 0 Task Available ]' : '[ My Complete Task ]'}</h1>
                     </div>
-                    <div className='task_container mb-5'>
+                    <div className='task_container mb-5 dark:bg-gray-900'>
                         {
                             tasks.map((item) =>
-                                <div class="flex justify-center items-center mb-20">
-                                    <div class="max-w-xs container bg-white rounded-xl shadow-lg transform transition duration-500  hover:shadow-2xl">
+                                <div class="flex justify-center items-center mb-20 dark:bg-gray-900">
+                                    <div class="max-w-xs container bg-white  rounded-xl shadow-lg transform transition duration-500  hover:shadow-2xl">
                                         <div>
-                                            <div className='flex justify-between align-middle'>
+                                            <div className='flex justify-between align-middle '>
                                                 <h1 class="text-2xl mt-2 ml-4 font-bold text-gray-800 cursor-pointer hover:text-gray-900 transition duration-100">{item.title}</h1>
                                                 <div>
                                                     {item.postStatus === 'complete' &&
@@ -134,7 +137,7 @@ const CompletedTask = () => {
                                                     <span>
                                                         <FcCalendar></FcCalendar>
                                                     </span>
-                                                    <span>{item.date}</span>
+                                                    <span>{item.date.slice(2,)}</span>
                                                 </div>
                                             </div>
                                         </div>

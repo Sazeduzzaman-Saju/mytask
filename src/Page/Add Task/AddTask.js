@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 import { PuffLoader } from 'react-spinners';
 import BreadCrumb from '../../comps/BreadCrumb/BreadCrumb';
 import { AuthContext } from '../../context/AuthProvider';
@@ -70,7 +71,7 @@ const AddTask = () => {
         const sellerPost = { title, img, date, task, time, photoURL, displayName, email, postStatus: 'new post' };
 
 
-        fetch('http://localhost:5000/alltask', {
+        fetch('https://mytask-server.vercel.app/alltask', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -82,7 +83,7 @@ const AddTask = () => {
                 console.log(data)
                 if (data.acknowledged) {
                     reset();
-                    alert('Car Details Added')
+                    toast.success('Task Added')
 
                 }
             })
@@ -101,7 +102,7 @@ const AddTask = () => {
                 </div>
                 :
                 <div>
-                    <div className="py-6 dark:bg-black dark:text-black">
+                    <div className="py-6  dark:bg-gray-900">
                         <div className=" container mx-auto flex flex-col items-center justify-center p-4 space-y-8 md:p-10 lg:space-y-0 lg:flex-row lg:justify-between">
                             <div className=''>
                                 {breadCrumb.map((item) => (
@@ -111,12 +112,12 @@ const AddTask = () => {
                         </div>
                     </div>
 
-                    <div className='text-center p-5'>
-                        <h1 className='text-3xl text-black font-bold uppercase'>[ Add A Task Or Schedule ]</h1>
+                    <div className='text-center p-5 dark:bg-gray-900'>
+                        <h1 className='text-3xl text-black dark:text-white font-bold uppercase'>[ Add A Task Or Schedule ]</h1>
                     </div>
 
-                    <div className="flex items-center justify-center p-12 mb-20 xs:mb-5">
-                        <div className="mx-auto w-full max-w-[550px]">
+                    <div className="flex items-center justify-center p-12  xs:mb-5 dark:bg-gray-900">
+                        <div className="mx-auto w-full max-w-[550px] ">
                             <form onSubmit={handleSubmit(handleTaskPost)}>
                                 {/* title */}
                                 <div className="-mx-3 flex flex-wrap">
@@ -233,9 +234,9 @@ m-0  focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
                                         </div>
                                     </div>
                                 </div>
-                                <div className='flex justify-center'>
+                                <div className='flex justify-center pb-10'>
                                     <button
-                                        className="primary_btn w-full"
+                                        className="primary_btn w-full dark:bg-white"
                                     >
                                         Add Task
                                     </button>

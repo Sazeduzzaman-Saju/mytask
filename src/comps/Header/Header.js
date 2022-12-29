@@ -1,4 +1,4 @@
-import { Fragment, useContext } from 'react'
+import { Fragment, useContext, useEffect, useState } from 'react'
 import { Disclosure, Menu } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link, NavLink } from 'react-router-dom'
@@ -6,17 +6,21 @@ import { AuthContext } from '../../context/AuthProvider'
 import { FaUser } from 'react-icons/fa';
 
 const navigation = [
+
     { name: 'Home', href: '/' },
     { name: 'Add Task', href: '/add-task' },
     { name: 'My Task', href: '/my-task' },
     { name: 'Completed', href: '/completed-task' },
     { name: 'Important', href: '/important-task' },
     { name: 'All Task', href: '/all-task' },
+
 ]
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
+
+
 
 const Header = () => {
     const { user, singOut } = useContext(AuthContext);
@@ -25,9 +29,38 @@ const Header = () => {
             .then(result => { })
             .catch(error => console.log(error))
     }
+
+
+    const [theme, setTheme] = useState(null);
+
+    useEffect(() => {
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            setTheme('dark');
+        }
+        else {
+            setTheme('light');
+        }
+    }, [])
+
+    useEffect(() => {
+        if (theme === "dark") {
+            document.documentElement.classList.add("dark");
+        } else {
+            document.documentElement.classList.remove("dark");
+        }
+    }, [theme]);
+
+    const handleThemeSwitch = () => {
+        setTheme(theme === "dark" ? "light" : "dark");
+    };
+
+    const [toggle, setToggle] = useState(true);
+    const toggleClass = " transform translate-x-5";
+
+
     return (
-        <div>
-            <Disclosure as="nav" className="bg-white drop-shadow-md">
+        <div className=''>
+            <Disclosure as="nav" className="bg-white dark:bg-slate-900 dark:text-white drop-shadow-md mx-w-full-xl mx-auto">
                 {({ open }) => (
                     <>
                         <div className="mx-auto  px-2 sm:px-6 lg:px-8">
@@ -95,11 +128,34 @@ const Header = () => {
                                     <Menu as="div" className="relative ml-3">
 
 
-                                        <div className='flex'>
+                                        <div className='flex '>
+                                            <>
+                                                <div className="flex flex-col justify-center items-center mr-3 " onClick={handleThemeSwitch}>
+                                                    {/*   Switch Container */}
+
+                                                    <div
+                                                        className="md:w-14 md:h-7 w-12 h-6 flex items-center bg-gray-400 rounded-full p-1 cursor-pointer hidden sm:block"
+                                                        onClick={() => {
+                                                            setToggle(!toggle);
+                                                        }}
+                                                    >
+                                                        {/* Switch */}
+                                                        <div
+                                                            className={
+                                                                "bg-black md:w-6 md:h-6 h-5 w-5 rounded-full shadow-md transform duration-300 ease-in-out" +
+                                                                (toggle ? null : toggleClass)
+                                                            }
+                                                        ></div>
+                                                    </div>
+                                                </div>
+                                            </>
+
+
+
                                             {user?.photoURL ?
                                                 <>
                                                     <Link to='/login'>
-                                                        <button onClick={handleSingOut} className='mr-3 primary_btn text-black'>SignOut</button>
+                                                        <button onClick={handleSingOut} className='mr-3 primary_btn text-black hidden sm:block'>SignOut</button>
                                                     </Link>
                                                     <img
                                                         src={user?.photoURL}
@@ -136,20 +192,22 @@ const Header = () => {
                                         as="a"
                                         href={item.href}
                                         className={classNames(
-                                            item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                            item.current ? 'bg-gray-900 text-black' : 'text-black hover:bg-gray-700 hover:text-white',
                                             'block px-3 py-2 rounded-md text-base font-medium'
                                         )}
                                         aria-current={item.current ? 'page' : undefined}
                                     >
                                         {item.name}
                                     </Disclosure.Button>
+
+
                                 ))}
                             </div>
                         </Disclosure.Panel>
                     </>
                 )}
-            </Disclosure>
-        </div>
+            </Disclosure >
+        </div >
     );
 };
 

@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import React, { useContext, useEffect, useState } from 'react';
 import { PuffLoader } from 'react-spinners';
 import BreadCrumb from '../../comps/BreadCrumb/BreadCrumb';
 import Comments from '../../comps/Comments/Comments';
+import { AuthContext } from '../../context/AuthProvider';
 import useWebTItle from '../../hooks/useWebTItle';
 import './AllTask.scss'
 
 
 const AllTask = () => {
-
+    const { user } = useContext(AuthContext)
     const breadCrumb = [
         {
             id: '1',
@@ -28,7 +30,20 @@ const AllTask = () => {
             setLoading(false)
 
         }, 1000)
-    }, [])
+    }, []);
+
+    const url = `https://mytask-server.vercel.app/alltask`;
+
+    const { data: alltask = [], } = useQuery({
+        queryKey: ['alltask'],
+        queryFn: async () => {
+            const res = await fetch(url);
+            const data = await res.json();
+            return data;
+        }
+    })
+
+    console.log(url)
     return (
         <div>
             {loading ?
@@ -41,9 +56,9 @@ const AllTask = () => {
                 </div>
                 :
                 <section className='mx-w-full-xl'>
-                    <div className="py-6 dark:bg-black dark:text-black">
+                    <div className="py-6 dark:bg-gray-900  dark:text-white">
                         <div className=" container mx-auto flex flex-col items-center justify-center p-4 space-y-8 md:p-10 lg:space-y-0 lg:flex-row lg:justify-between">
-                            <div className=''>
+                            <div className='dark:bg-gray-900'>
                                 {breadCrumb.map((item) => (
                                     <BreadCrumb key={item.id} item={item}></BreadCrumb>
                                 ))}
@@ -51,35 +66,37 @@ const AllTask = () => {
                         </div>
                     </div>
 
-                    <div className='text-center p-5'>
-                        <h1 className='text-3xl text-black font-bold uppercase'>[ All User Task Here ]</h1>
+                    <div className='text-center p-5 dark:bg-slate-900 '>
+                        <h1 className='text-3xl text-black font-bold uppercase'>{alltask.length === 0 ? '[ 0 Task Available ]' : '[ ALl User Task ]'}</h1>
                     </div>
-                    <div class="text-gray-600 body-font">
+                    <div class="text-gray-600  body-font dark:bg-gray-900">
                         <div class="container  py-24 mx-auto">
                             <div class="flex flex-wrap -m-4">
-                                <div class="p-4 lg:w-1/3">
-                                    <div class="h-full bg-gray-100 bg-opacity-75 px-8 pt-5 pb-5 rounded-lg overflow-hidden text-center relative">
-                                        <div class="flex justify-center ml-3">
-                                            <div class="mr-3">
-                                                <img src="http://picsum.photos/50" alt="" class="rounded-full" />
+                                <div class="task_container">
+                                    {alltask.map((item) =>
+                                        <div class=" bg-gray-100 dark:bg-gray-900 bg-opacity-75 px-8 pt-5 pb-5 rounded-lg overflow-hidden text-center relative">
+                                            <div class="flex justify-between rounded-md text-white ml-3 bg-black p-2">
+                                                <div class="mr-3">
+                                                    <img src={item.photoURL} alt="" class="rounded-full w-8 h-8 border-2" />
+                                                </div>
+                                                <div>
+                                                    <h1 class="font-semibold">{item.displayName}</h1>
+                                                    <p class="text-xs text-gray-500">{item.date}</p>
+                                                </div>
+
                                             </div>
-                                            <div>
-                                                <h1 class="font-semibold">Itay Buyoy</h1>
-                                                <p class="text-xs text-gray-500">2 April 2022</p>
-                                            </div>
+                                            <p class="leading-relaxed mb-3">{item.task}</p>
+                                            <p class="text-indigo-500 inline-flex items-center">Leave A Comment
+                                                <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M5 12h14"></path>
+                                                    <path d="M12 5l7 7-7 7"></path>
+                                                </svg>
+                                            </p>
+
+                                            <Comments></Comments>
 
                                         </div>
-                                        <p class="leading-relaxed mb-3">Photo booth fam kinfolk cold-pressed sriracha leggings jianbing microdosing tousled waistcoat.</p>
-                                        <p class="text-indigo-500 inline-flex items-center">Leave A Comment
-                                            <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="M5 12h14"></path>
-                                                <path d="M12 5l7 7-7 7"></path>
-                                            </svg>
-                                        </p>
-
-                                        <Comments></Comments>
-
-                                    </div>
+                                    )}
                                 </div>
                             </div>
                         </div>

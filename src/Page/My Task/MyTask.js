@@ -5,9 +5,11 @@ import BreadCrumb from '../../comps/BreadCrumb/BreadCrumb';
 import useWebTItle from '../../hooks/useWebTItle';
 import { FcCalendar, FcAlarmClock, FcEmptyTrash, FcHighPriority, FcApproval } from "react-icons/fc";
 import { AuthContext } from '../../context/AuthProvider';
+import { toast } from 'react-hot-toast';
 
 const MyTask = () => {
     useWebTItle('My Task');
+    const [isDisabled, setIsDisabled] = useState(false);
 
     const { user } = useContext(AuthContext)
     const breadCrumb = [
@@ -29,8 +31,8 @@ const MyTask = () => {
         }, 1000)
     }, [])
 
-    const url = `http://localhost:5000/alltask`;
-    const { data: alltask = [], refetch, } = useQuery({
+    const url = `https://mytask-server.vercel.app/mytask?email=${user?.email}`;
+    const { data: alltask = [], } = useQuery({
         queryKey: ['alltask'],
         queryFn: async () => {
             const res = await fetch(url);
@@ -41,16 +43,16 @@ const MyTask = () => {
 
     const taskRemove = id => {
         console.log(id)
-        const proceed = window.confirm('Confirm Delete This Order')
+        const proceed = window.confirm('Confirm Delete This Task')
         if (proceed) {
-            fetch(`http://localhost:5000/alltask/${id}`, {
+            fetch(`https://mytask-server.vercel.app/alltask/${id}`, {
                 method: 'DELETE'
             })
                 .then(res => res.json())
                 .then(data => {
                     console.log(data)
                     if (data.deletedCount > 0) {
-                        alert('Delete Successfully')
+                        toast.success('Delete Successfully')
 
                     }
                 })
@@ -59,6 +61,7 @@ const MyTask = () => {
     }
 
     const handleComplete = (data) => {
+        setIsDisabled(true)
         // console.log(data.comments)
         console.log(data)
         const importantTask = {
@@ -73,9 +76,8 @@ const MyTask = () => {
             userPhoto: user?.photoURL,
             postStatus: "complete"
         }
-        console.log(importantTask)
 
-        fetch('http://localhost:5000/complete', {
+        fetch('https://mytask-server.vercel.app/complete', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -86,10 +88,11 @@ const MyTask = () => {
             .then(data => {
                 console.log(data)
                 if (data.acknowledged) {
-                    alert('Important Task Added')
+                    toast.success('Complete Task Added');
+                } else {
+                    toast.success('All Ready Added');
                 }
             })
-        console.log('sellerPost', importantTask)
     }
 
     const handleImportant = (data) => {
@@ -109,7 +112,7 @@ const MyTask = () => {
         }
         console.log(importantTask)
 
-        fetch('http://localhost:5000/important', {
+        fetch('https://mytask-server.vercel.app/important', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -120,11 +123,17 @@ const MyTask = () => {
             .then(data => {
                 console.log(data)
                 if (data.acknowledged) {
-                    alert('Important Task Added')
+                    toast.success('Important Task Added')
                 }
             })
-        console.log('sellerPost', importantTask)
     }
+    const styles = {
+
+        buttonDisabled: {
+
+            cursor: 'not-allowed',
+        },
+    };
     return (
         <div>
             {loading ?
@@ -136,8 +145,8 @@ const MyTask = () => {
                     </div>
                 </div>
                 :
-                <section className='mx-w-full-xl'>
-                    <div className="py-6 dark:bg-black dark:text-black">
+                <section className='mx-w-full-xl dark:text-white'>
+                    <div className="py-6 dark:bg-slate-900 dark:text-black">
                         <div className=" container mx-auto flex flex-col items-center justify-center p-4 space-y-8 md:p-10 lg:space-y-0 lg:flex-row lg:justify-between">
                             <div className=''>
                                 {breadCrumb.map((item) => (
@@ -146,10 +155,10 @@ const MyTask = () => {
                             </div>
                         </div>
                     </div>
-                    <div className='text-center p-5'>
-                        <h1 className='text-3xl text-black font-bold uppercase'>[ My All Task ]</h1>
+                    <div className='text-center p-5 dark:bg-slate-900 '>
+                        <h1 className='text-3xl text-black font-bold uppercase'>{alltask.length === 0 ? '[ 0 Task Available ]' : '[ My All Task ]'}</h1>
                     </div>
-                    <div className='task_container mb-5'>
+                    <div className='task_container mb-5 dark:bg-slate-900'>
                         {
                             alltask.map((item) =>
                                 <div class="flex justify-center items-center mb-20">
@@ -159,6 +168,8 @@ const MyTask = () => {
                                                 <h1 class="text-2xl mt-2 ml-4 font-bold text-gray-800 cursor-pointer hover:text-gray-900 transition duration-100">{item.title}</h1>
                                                 <div>
                                                     <button onClick={() => handleComplete(item)} class="primary-btn px-2 py-2 rounded-full shadow hover:bg-black  hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button"
+                                                        disabled={isDisabled}
+                                                        style={isDisabled ? styles.buttonDisabled : styles.button}
                                                     >
 
                                                         <div class="group flex relative">
@@ -207,7 +218,7 @@ const MyTask = () => {
                                                     <span>
                                                         <FcCalendar></FcCalendar>
                                                     </span>
-                                                    <span>{item.date}</span>
+                                                    <span>{item.date.slice(2,)}</span>
                                                 </div>
                                             </div>
                                         </div>
