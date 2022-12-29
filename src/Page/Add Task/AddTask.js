@@ -6,7 +6,7 @@ import { AuthContext } from '../../context/AuthProvider';
 import useWebTItle from '../../hooks/useWebTItle';
 
 const AddTask = () => {
-    useWebTItle('Add A Task')
+    useWebTItle('Add A Task');
     const breadCrumb = [
         {
             id: '1',
@@ -49,39 +49,44 @@ const AddTask = () => {
             .then(imgData => {
                 console.log(imgData.data.url)
                 if (imgData.success) {
+                    console.log(data)
                     saveTask(
                         data.title,
                         imgData.data.url,
-
-
+                        data.date,
+                        data.task,
+                        data.time,
+                        user.photoURL,
+                        user.displayName,
+                        user.email
                     )
                 }
             })
             .catch(err => console.error(err))
     }
 
-    const saveTask = (title, img, price, condition, slug, position, wheel, mileage, gear_type, model, negotiable_price, phone, description, displayName, photoURL, email) => {
+    const saveTask = (title, img, date, task, time, photoURL, displayName, email) => {
 
-        const sellerPost = { title, img, price, condition, slug, position, wheel, mileage, gear_type, model, negotiable_price, phone, description, displayName, photoURL, email, postStatus: 'sellerPost' };
+        const sellerPost = { title, img, date, task, time, photoURL, displayName, email, postStatus: 'new post' };
 
 
-        // fetch('https://resell-autocar-server.vercel.app/cars', {
-        //     method: 'POST',
-        //     headers: {
-        //         'content-type': 'application/json'
-        //     },
-        //     body: JSON.stringify(sellerPost)
-        // })
-        //     .then(res => res.json())
-        //     .then(data => {
-        //         console.log(data)
-        //         if (data.acknowledged) {
-        //             reset();
-        //             alert('Car Details Added')
+        fetch('http://localhost:5000/alltask', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(sellerPost)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                if (data.acknowledged) {
+                    reset();
+                    alert('Car Details Added')
 
-        //         }
-        //     })
-        // console.log('sellerPost', sellerPost)
+                }
+            })
+        console.log('sellerPost', sellerPost)
     }
     // post a task end
     return (
