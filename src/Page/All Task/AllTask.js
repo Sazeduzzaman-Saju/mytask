@@ -66,8 +66,11 @@ const AllTask = () => {
                         </div>
                     </div>
 
-                    <div className='text-center p-5 dark:bg-slate-900 '>
-                        <h1 className='text-3xl text-black font-bold uppercase'>{alltask.length === 0 ? '[ 0 Task Available ]' : '[ ALl User Task ]'}</h1>
+                    <div className='text-center p-5 dark:bg-gray-900 '>
+                        {alltask.length === 0 ?
+                            <h1 className='text-3xl text-black font-bold uppercase'>
+                                [ 0 Task Available <br />Please Add Important Task ]</h1> : <h1 className='text-3xl text-black font-bold uppercase'>
+                                [ My All Task With Status ]</h1>}
                     </div>
                     <div class="text-gray-600  body-font dark:bg-gray-900">
                         <div class="container  py-24 mx-auto">

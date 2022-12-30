@@ -9,8 +9,6 @@ import { toast } from 'react-hot-toast';
 
 const MyTask = () => {
     useWebTItle('My Task');
-    const [isDisabled, setIsDisabled] = useState(false);
-
     const { user } = useContext(AuthContext)
     const breadCrumb = [
         {
@@ -32,7 +30,7 @@ const MyTask = () => {
     }, [])
 
     const url = `https://mytask-server.vercel.app/mytask?email=${user?.email}`;
-    const { data: alltask = [], } = useQuery({
+    const { data: alltask = [], refetch } = useQuery({
         queryKey: ['alltask'],
         queryFn: async () => {
             const res = await fetch(url);
@@ -41,59 +39,6 @@ const MyTask = () => {
         }
     })
 
-    const taskRemove = id => {
-        console.log(id)
-        const proceed = window.confirm('Confirm Delete This Task')
-        if (proceed) {
-            fetch(`https://mytask-server.vercel.app/alltask/${id}`, {
-                method: 'DELETE'
-            })
-                .then(res => res.json())
-                .then(data => {
-                    console.log(data)
-                    if (data.deletedCount > 0) {
-                        toast.success('Delete Successfully')
-
-                    }
-                })
-                .catch(error => console.error(error))
-        }
-    }
-
-    const handleComplete = (data) => {
-        setIsDisabled(true)
-        // console.log(data.comments)
-        console.log(data)
-        const importantTask = {
-            title: data.title,
-            taskOld_Id: data._id,
-            img: data.img,
-            date: data.date,
-            task: data.task,
-            time: data.time,
-            email: user?.email,
-            userName: user?.displayName,
-            userPhoto: user?.photoURL,
-            postStatus: "complete"
-        }
-
-        fetch('https://mytask-server.vercel.app/complete', {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify(importantTask)
-        })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data)
-                if (data.acknowledged) {
-                    toast.success('Complete Task Added');
-                } else {
-                    toast.success('All Ready Added');
-                }
-            })
-    }
 
     const handleImportant = (data) => {
         // console.log(data.comments)
@@ -126,14 +71,73 @@ const MyTask = () => {
                     toast.success('Important Task Added')
                 }
             })
+        taskRemover(data._id);
     }
-    const styles = {
 
-        buttonDisabled: {
+    const handleComplete = (data) => {
+        // setIsDisabled(true)
+        const importantTask = {
+            title: data.title,
+            taskOld_Id: data._id,
+            img: data.img,
+            date: data.date,
+            task: data.task,
+            time: data.time,
+            email: user?.email,
+            userName: user?.displayName,
+            userPhoto: user?.photoURL,
+            postStatus: "complete"
+        }
 
-            cursor: 'not-allowed',
-        },
-    };
+        fetch('https://mytask-server.vercel.app/complete', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(importantTask)
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.acknowledged) {
+
+                    toast.success('Complete Task Added');
+                    console.log(data)
+                }
+                refetch('')
+            })
+        taskRemover(data._id);
+    }
+
+    const taskRemover = id => {
+        fetch(`https://mytask-server.vercel.app/alltask/${id}`, {
+            method: 'DELETE'
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                if (data.deletedCount > 0) {
+                    refetch();
+                }
+            })
+            .catch(error => console.error(error))
+    }
+
+    const taskRemove = id => {
+        fetch(`https://mytask-server.vercel.app/alltask/${id}`, {
+            method: 'DELETE'
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                if (data.deletedCount > 0) {
+                    toast.success('Delete Successfully')
+                    refetch();
+                }
+            })
+            .catch(error => console.error(error))
+
+    }
+
     return (
         <div>
             {loading ?
@@ -156,7 +160,11 @@ const MyTask = () => {
                         </div>
                     </div>
                     <div className='text-center p-5 dark:bg-slate-900 '>
-                        <h1 className='text-3xl text-black font-bold uppercase'>{alltask.length === 0 ? '[ 0 Task Available ]' : '[ My All Task ]'}</h1>
+                        {alltask.length === 0 ?
+                            <h1 className='text-3xl text-black font-bold uppercase'>
+                                [0 Needed Task Available <br />Please Check Others Routes or Add Task]</h1> : <h1 className='text-3xl text-black font-bold uppercase'>
+                                [ My Task ]</h1>}
+
                     </div>
                     <div className='task_container mb-5 dark:bg-slate-900'>
                         {
@@ -168,8 +176,7 @@ const MyTask = () => {
                                                 <h1 class="text-2xl mt-2 ml-4 font-bold text-gray-800 cursor-pointer hover:text-gray-900 transition duration-100">{item.title}</h1>
                                                 <div>
                                                     <button onClick={() => handleComplete(item)} class="primary-btn px-2 py-2 rounded-full shadow hover:bg-black  hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button"
-                                                        disabled={isDisabled}
-                                                        style={isDisabled ? styles.buttonDisabled : styles.button}
+
                                                     >
 
                                                         <div class="group flex relative">
@@ -228,7 +235,7 @@ const MyTask = () => {
                     </div>
                 </section>
             }
-        </div>
+        </div >
 
     );
 }

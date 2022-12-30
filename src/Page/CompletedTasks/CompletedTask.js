@@ -81,8 +81,11 @@ const CompletedTask = () => {
                             </div>
                         </div>
                     </div>
-                    <div className='text-start p-5 dark:bg-gray-900 '>
-                        <h1 className='text-3xl text-center text-black font-bold uppercase'>{tasks.length === 0 ? '[ 0 Task Available ]' : '[ My Complete Task ]'}</h1>
+                    <div className='text-center p-5 dark:bg-gray-900 '>
+                        {tasks.length === 0 ?
+                            <h1 className='text-3xl text-black font-bold uppercase'>
+                                [ 0 Complete Task Available <br />Please Add Complete Task ]</h1> : <h1 className='text-3xl text-black font-bold uppercase'>
+                                [ My Complete Task ]</h1>}
                     </div>
                     <div className='task_container mb-5 dark:bg-gray-900'>
                         {

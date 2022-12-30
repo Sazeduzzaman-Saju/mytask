@@ -79,8 +79,11 @@ const Important = () => {
                             </div>
                         </div>
                     </div>
-                    <div className='text-center p-5 dark:bg-slate-900 '>
-                        <h1 className='text-3xl text-black font-bold uppercase'>{tasks.length === 0 ? '[ 0 Task Available ]' : '[ My Important Task ]'}</h1>
+                    <div className='text-center p-5 dark:bg-gray-900 '>
+                        {tasks.length === 0 ?
+                            <h1 className='text-3xl text-black font-bold uppercase'>
+                                [ 0 Important Task Available <br />Please Add Important Task ]</h1> : <h1 className='text-3xl text-black font-bold uppercase'>
+                                [ My Important Task ]</h1>}
                     </div>
                     <div>
                         <div className='task_container mb-5 dark:bg-gray-900'>
